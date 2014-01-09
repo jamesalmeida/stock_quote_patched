@@ -28,7 +28,12 @@ module StockQuote
       else
         @response_code = 200
         data.map do |k,v|
-          instance_variable_set("@#{k.underscore}", (v.nil? ? nil : v.to_date.to_fs))
+          begin
+            parsed = v.to_date.to_fs
+          rescue
+            parsed = v
+          end
+          instance_variable_set("@#{k.underscore}", (v.nil? ? nil : parsed))
         end
       end
     end
